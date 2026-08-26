@@ -1,0 +1,38 @@
+#!/bin/sh
+
+echo "Executando verificacoes pre-commit..."
+
+FILES=$(git diff --cached --name-only)
+
+# Frontend
+if echo "$FILES" | grep -q "^frontend/FleetOps/"; then
+    echo "Frontend alterado. Executando lint-staged..."
+
+    cd frontend/FleetOps || exit 1
+
+    npx lint-staged
+    if [ $? -ne 0 ]; then
+        echo "Erro no lint-staged do frontend."
+        exit 1
+    fi
+
+    cd ../.. || exit 1
+fi
+
+# Backend
+if echo "$FILES" | grep -q "^backend/"; then
+    echo "Backend alterado. Executando Spotless..."
+
+    cd backend || exit 1
+
+    ./mvnw spotless:apply
+    if [ $? -ne 0 ]; then
+        echo "Erro ao formatar o backend."
+        exit 1
+    fi
+
+    cd .. || exit 1
+    git add backend
+fi
+
+echo "Verificacoes concluidas."

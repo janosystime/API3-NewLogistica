@@ -1,0 +1,25 @@
+{
+  "name": "api3-newlogistica",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/janosystime/API3-NewLogistica.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/janosystime/API3-NewLogistica/issues"
+  },
+  "homepage": "https://github.com/janosystime/API3-NewLogistica#readme",
+  "devDependencies": {
+    "husky": "^9.1.7"
+  }
+}
