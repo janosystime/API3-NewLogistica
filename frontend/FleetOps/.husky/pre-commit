@@ -1,4 +1,0 @@
-#!/usr/bin/env sh
-
-cd frontend/FleetOps
-npx lint-staged

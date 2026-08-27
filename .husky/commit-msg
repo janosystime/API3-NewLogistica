@@ -1,0 +1,36 @@
+#!/bin/sh
+
+COMMIT_MSG_FILE="$1"
+COMMIT_MSG=$(head -n 1 "$COMMIT_MSG_FILE")
+
+PATTERN="^(feat|fix|docs|refactor|test|chore|style|perf|build|ci): .+"
+
+if ! echo "$COMMIT_MSG" | grep -Eq "$PATTERN"; then
+    echo ""
+    echo "Mensagem de commit inválida!"
+    echo ""
+    echo "Formato esperado:"
+    echo "  tipo: descrição"
+    echo ""
+    echo "Tipos permitidos:"
+    echo "  feat"
+    echo "  fix"
+    echo "  docs"
+    echo "  refactor"
+    echo "  test"
+    echo "  chore"
+    echo "  style"
+    echo "  perf"
+    echo "  build"
+    echo "  ci"
+    echo ""
+    echo "Exemplos:"
+    echo "  feat: adiciona cadastro de veículos"
+    echo "  fix: corrige validação de login"
+    echo "  test: adiciona testes de motorista"
+    echo ""
+
+    exit 1
+fi
+
+echo "Mensagem de commit válida: $COMMIT_MSG"
