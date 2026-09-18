@@ -52,4 +52,3 @@ public class Usuario {
     @Column(name = "perfil_acesso", length = 50)
     private String perfilAcesso;
 }
-

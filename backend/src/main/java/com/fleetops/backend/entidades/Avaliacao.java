@@ -18,13 +18,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "comentario")
+@Table(name = "avaliacao")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Comentario {
+public class Avaliacao {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,9 +41,14 @@ public class Comentario {
     @JoinColumn(name = "fk_id_motorista", nullable = false)
     private Motorista motorista;
 
-    @Size(max = 500, message = "O comentário deve ter no máximo 500 caracteres")
-    @Column(name = "comentario", length = 500)
-    private String comentario;
+    @NotNull(message = "O manifesto avaliado é obrigatório")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "fk_id_manifesto", nullable = false)
+    private Manifesto manifesto;
+
+    @Size(max = 500, message = "O feedback deve ter no máximo 500 caracteres")
+    @Column(name = "feedback", length = 500)
+    private String feedback;
 
     @Column(name = "nota_comentario")
     private Integer notaComentario;

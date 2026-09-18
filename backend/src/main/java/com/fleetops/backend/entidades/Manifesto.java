@@ -43,14 +43,11 @@ public class Manifesto {
     @Column(name = "valor_recebido", precision = 12, scale = 2)
     private BigDecimal valorRecebido;
 
-    @Column(name = "valor_total", precision = 12, scale = 2)
-    private BigDecimal valorTotal;
-
     @Column(name = "frete", precision = 12, scale = 2)
     private BigDecimal frete;
 
-    @Column(name = "outras_despesas", precision = 12, scale = 2)
-    private BigDecimal outrasDespesas;
+    @Column(name = "aereo")
+    private Boolean aereo;
 
     @NotNull(message = "O motorista condutor é obrigatório")
     @ManyToOne(fetch = FetchType.LAZY)
@@ -67,4 +64,3 @@ public class Manifesto {
     @JoinColumn(name = "fk_id_veiculo", nullable = false)
     private Veiculo veiculo;
 }
-

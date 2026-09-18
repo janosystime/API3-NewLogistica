@@ -73,4 +73,3 @@ public class Motorista {
     @JoinColumn(name = "fk_id_agregado", nullable = false)
     private Agregado agregado;
 }
-

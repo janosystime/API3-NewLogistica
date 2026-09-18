@@ -42,4 +42,3 @@ public class Agregado {
     @Column(name = "contato_agregado", length = 20)
     private String contatoAgregado;
 }
-
