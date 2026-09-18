@@ -30,6 +30,16 @@
 		<java.version>21</java.version>
 	</properties>
 	<dependencies>
+	<dependency>
+	 <groupId>com.univocity</groupId>
+	 <artifactId>univocity-parsers</artifactId>
+	 <version>2.9.1</version>
+	</dependency>
+	<dependency>
+		<groupId>com.github.albfernandez</groupId>
+		<artifactId>juniversalchardet</artifactId>
+		<version>2.4.0</version>
+	</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
