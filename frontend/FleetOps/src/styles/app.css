@@ -1,182 +1,393 @@
-.counter {
-  font-size: 16px;
-  padding: 5px 10px;
-  border-radius: 5px;
-  color: var(--accent);
-  background: var(--accent-bg);
-  border: 2px solid transparent;
-  transition: border-color 0.3s;
-  margin-bottom: 24px;
-
-  &:hover {
-    border-color: var(--accent-border);
-  }
-  &:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-  }
+/*
+   1. VARIÁVEIS GLOBAIS E FUNDO DA TELA
+*/
+:root {
+  --bg-main: #0f1115;
+  --bg-card: #1a1d24;
+  --bg-section: #15181e;
+  --bg-light: #222630;
+  --text-main: #f0f0f0;
+  --text-muted: #9ca3af;
+  --border-color: #374151;
+  --accent-orange: #f97316;
 }
 
-.hero {
-  position: relative;
-
-  .base,
-  .framework,
-  .vite {
-    inset-inline: 0;
-    margin: 0 auto;
-  }
-
-  .base {
-    width: 170px;
-    position: relative;
-    z-index: 0;
-  }
-
-  .framework,
-  .vite {
-    position: absolute;
-  }
-
-  .framework {
-    z-index: 1;
-    top: 34px;
-    height: 28px;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(44deg) rotateY(39deg) scale(1.4);
-  }
-
-  .vite {
-    z-index: 0;
-    top: 107px;
-    height: 26px;
-    width: auto;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(40deg) rotateY(39deg) scale(0.8);
-  }
+body {
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
-#center {
+/*
+   2. ESTRUTURA PRINCIPAL (LAYOUT 2 COLUNAS)
+*/
+.dashboard-layout {
+  display: flex;
+  height: 100vh;
+  background-color: var(--bg-main);
+}
+
+.main-content {
+  flex: 1;
+  padding: 24px;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 25px;
-  place-content: center;
-  place-items: center;
-  flex-grow: 1;
-
-  @media (max-width: 1024px) {
-    padding: 32px 20px 24px;
-    gap: 18px;
-  }
 }
 
-#next-steps {
+.operator-warning {
+  color: var(--text-muted);
+  font-size: 14px;
+  margin-bottom: 24px;
   display: flex;
-  border-top: 1px solid var(--border);
-  text-align: left;
-
-  & > div {
-    flex: 1 1 0;
-    padding: 32px;
-    @media (max-width: 1024px) {
-      padding: 24px 20px;
-    }
-  }
-
-  .icon {
-    margin-bottom: 16px;
-    width: 22px;
-    height: 22px;
-  }
-
-  @media (max-width: 1024px) {
-    flex-direction: column;
-    text-align: center;
-  }
+  align-items: center;
+  gap: 8px;
 }
 
-#docs {
-  border-right: 1px solid var(--border);
-
-  @media (max-width: 1024px) {
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-  }
+.empty-state {
+  color: var(--text-muted);
+  font-size: 16px;
+  margin: auto;
 }
 
-#next-steps ul {
+/*
+   3. BARRA LATERAL E FILTROS
+*/
+.sidebar {
+  width: 320px;
+  background-color: var(--bg-section);
+  border-right: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-filters {
+  padding: 16px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.search-input {
+  width: 100%;
+  padding: 8px 12px;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: white;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  box-sizing: border-box;
+}
+
+.status-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.pill-btn {
+  background-color: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  padding: 4px 0;
+}
+
+.pill-btn.active {
+  color: white;
+  font-weight: bold;
+}
+
+.list-counter {
+  font-size: 12px;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+/*
+   4. LISTA DE MOTORISTAS
+*/
+.driver-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.list-item {
+  background-color: var(--bg-card);
+  border: 1px solid transparent;
+  border-radius: 8px;
+  padding: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.list-item:hover {
+  background-color: var(--bg-light);
+}
+
+.list-item.selected {
+  border-color: var(--accent-orange);
+  background-color: #2a221b;
+}
+
+.item-header,
+.item-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.item-name {
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.item-vehicle {
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.item-date {
+  color: var(--text-muted);
+  font-size: 12px;
+  margin-top: 8px;
+}
+
+.item-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  color: white;
+  margin-top: 8px;
+}
+
+/*5. CARD DO MOTORISTA */
+
+.driver-card-container {
+  display: flex;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  overflow: hidden;
+  max-width: 800px;
+}
+
+.card-left-panel {
+  width: 30%;
+  background-color: var(--bg-section);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-right: 1px solid var(--border-color);
+}
+
+.portrait-box {
+  width: 100px;
+  height: 100px;
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  padding: 4px;
+  margin-bottom: 12px;
+  background-color: var(--bg-main);
+}
+
+.portrait-placeholder {
+  width: 100%;
+  height: 100%;
+  background-color: var(--bg-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+}
+
+.portrait-initials {
+  font-size: 40px;
+  color: var(--text-muted);
+  font-weight: bold;
+}
+
+.driver-name {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 12px 0;
+  text-align: center;
+  color: white;
+}
+
+.status-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--bg-light);
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  margin-bottom: 24px;
+  border: 1px solid var(--border-color);
+  color: white;
+}
+
+.bottom-left-info {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background-color: var(--bg-light);
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.card-right-panel {
+  width: 70%;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.info-section {
+  background-color: var(--bg-light);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 16px 0;
+  color: var(--accent-orange);
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 8px;
+}
+
+.info-list {
   list-style: none;
   padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.info-list strong {
+  color: white;
+  margin-right: 4px;
+}
+
+.manifesto-grid {
   display: flex;
-  gap: 8px;
-  margin: 32px 0 0;
-
-  .logo {
-    height: 18px;
-  }
-
-  a {
-    color: var(--text-h);
-    font-size: 16px;
-    border-radius: 6px;
-    background: var(--social-bg);
-    display: flex;
-    padding: 6px 12px;
-    align-items: center;
-    gap: 8px;
-    text-decoration: none;
-    transition: box-shadow 0.3s;
-
-    &:hover {
-      box-shadow: var(--shadow);
-    }
-    .button-icon {
-      height: 18px;
-      width: 18px;
-    }
-  }
-
-  @media (max-width: 1024px) {
-    margin-top: 20px;
-    flex-wrap: wrap;
-    justify-content: center;
-
-    li {
-      flex: 1 1 calc(50% - 8px);
-    }
-
-    a {
-      width: 100%;
-      justify-content: center;
-      box-sizing: border-box;
-    }
-  }
+  gap: 16px;
 }
 
-#spacer {
-  height: 88px;
-  border-top: 1px solid var(--border);
-  @media (max-width: 1024px) {
-    height: 48px;
-  }
+.manifesto-box {
+  background-color: var(--bg-main);
+  padding: 12px 20px;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border-color);
+  min-width: 150px;
 }
 
-.ticks {
-  position: relative;
-  width: 100%;
+.manifesto-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
 
-  &::before,
-  &::after {
-    content: "";
-    position: absolute;
-    top: -4.5px;
-    border: 5px solid transparent;
-  }
+.manifesto-value {
+  font-size: 16px;
+  font-weight: 500;
+  color: white;
+}
 
-  &::before {
-    left: 0;
-    border-left-color: var(--border);
-  }
-  &::after {
-    right: 0;
-    border-right-color: var(--border);
-  }
+/*
+   6. CORES DE STATUS
+*/
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.bg-green {
+  background-color: #10b981;
+}
+
+.bg-yellow {
+  background-color: #eab308;
+}
+
+.bg-purple {
+  background-color: #8b5cf6;
+}
+
+.bg-red {
+  background-color: #ef4444;
+}
+
+.bg-gray {
+  background-color: #6b7280;
+}
+
+/*
+   7. DROPDOWN DE ALTERAR STATUS
+*/
+.status-dropdown-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background-color: var(--bg-main);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 0 16px;
+  transition: border-color 0.2s ease;
+}
+
+.status-dropdown-container:hover {
+  border-color: var(--text-muted);
+}
+
+.status-dropdown {
+  flex: 1;
+  background-color: transparent;
+  color: white;
+  border: none;
+  padding: 12px 0;
+  font-size: 14px;
+  cursor: pointer;
+  outline: none;
+}
+
+.status-dropdown option {
+  background-color: var(--bg-card);
+  color: white;
 }
