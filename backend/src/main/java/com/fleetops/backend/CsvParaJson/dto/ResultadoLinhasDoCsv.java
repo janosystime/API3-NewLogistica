@@ -12,23 +12,23 @@ public class ResultadoLinhasDoCsv<T> {
         this.invalidos = erros;
     }
 
-    public List<ErroLinhasDoCsv> getVeiculosInvalidos() {
+    public List<ErroLinhasDoCsv> getInvalidos() {
         return invalidos;
     }
 
-    public void setVeiculosInvalidos(List<ErroLinhasDoCsv> Invalidos) {
+    public void setInvalidos(List<ErroLinhasDoCsv> Invalidos) {
         this.invalidos = Invalidos;
     }
 
-    public List<T> getVeiculosValidos() {
+    public List<T> getValidos() {
         return validos;
     }
 
-    public void setVeiculosValidos(List<T> veiculosValidos) {
-        this.validos = veiculosValidos;
+    public void setValidos(List<T> Validos) {
+        this.validos = Validos;
     }
 
-    public void addVeiculosValidos(T veiculo) {
+    public void addValidos(T veiculo) {
         this.validos.add(veiculo);
     }
 

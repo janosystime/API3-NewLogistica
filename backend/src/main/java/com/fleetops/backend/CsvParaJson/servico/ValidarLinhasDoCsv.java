@@ -23,7 +23,7 @@ public class ValidarLinhasDoCsv<T> {
             Set<ConstraintViolation<T>> eValido = validator.validate(objeto);
 
             if (eValido.isEmpty()) {
-                resultado.addVeiculosValidos(objeto);
+                resultado.addValidos(objeto);
             } else {
                 String msg =
                         eValido.stream().map(ConstraintViolation::getMessage).collect(Collectors.joining(","));
