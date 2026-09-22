@@ -1,0 +1,156 @@
+/* Barra de busca e filtros */
+.list-toolbar {
+  padding: 12px 14px 10px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 7px 10px;
+  color: var(--muted);
+}
+.search-box input {
+  background: transparent;
+  border: none;
+  color: var(--text);
+  font-size: 12.5px;
+  font-family: inherit;
+  width: 100%;
+}
+.search-box input:focus {
+  outline: none;
+}
+.filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.filter-chips button {
+  font-family: inherit;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10.5px;
+  padding: 4px 8px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+}
+.filter-chips button.active {
+  font-weight: 600;
+}
+.filter-chips .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+.list-count {
+  font-size: 10.5px;
+  color: var(--muted);
+}
+
+/* Lista */
+.driver-list {
+  overflow-y: auto;
+  flex: 1;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.driver-row {
+  font-family: inherit;
+  text-align: left;
+  background: var(--panel-2);
+  border: 1px solid transparent;
+  border-radius: 9px;
+  padding: 9px 11px;
+  cursor: pointer;
+  color: var(--text);
+  position: relative;
+}
+.driver-row.active {
+  border-color: var(--accent);
+  background: rgba(255, 107, 53, 0.08);
+}
+.driver-row.locked {
+  opacity: 0.6;
+}
+.driver-row-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.driver-name {
+  font-size: 14px;
+  font-weight: 600;
+}
+.driver-meta {
+  font-size: 10.5px;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.driver-row-side {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 6px;
+}
+.manifest-age {
+  font-size: 10.5px;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+.locked-tag {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  color: #e0a458;
+  margin-top: 6px;
+}
+.empty-hint {
+  color: var(--muted);
+  font-size: 12px;
+  padding: 14px;
+  text-align: center;
+}
+
+/* Pills / badges (usados na lista e no detalhe) */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10.5px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 20px;
+}
+.pill .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+.score-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--panel-2);
+  border-radius: 20px;
+  padding: 3px 8px;
+  font-size: 11px;
+  color: #e0c458;
+}

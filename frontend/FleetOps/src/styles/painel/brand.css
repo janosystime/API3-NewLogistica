@@ -1,0 +1,35 @@
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-bottom: 26px;
+}
+.brand-mark {
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  background: linear-gradient(150deg, var(--accent), #c94e1f);
+  color: #1a0e05;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Oswald";
+  font-weight: 700;
+  font-size: 14px;
+  box-shadow: 0 6px 16px -4px rgba(255, 107, 53, 0.5);
+}
+.brand-mark.small {
+  width: 26px;
+  height: 26px;
+  font-size: 11px;
+  box-shadow: none;
+}
+.brand-name {
+  font-family: "Oswald";
+  font-size: 16px;
+  font-weight: 600;
+}
+.brand-sub {
+  font-size: 11px;
+  color: var(--muted);
+}

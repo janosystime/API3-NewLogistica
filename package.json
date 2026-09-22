@@ -29,5 +29,8 @@
     "commitizen": {
       "path": "./commitizen"
     }
+  },
+  "dependencies": {
+    "jsx-runtime": "^1.2.0"
   }
 }

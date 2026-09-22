@@ -1,0 +1,28 @@
+.app-shell {
+  flex: 1;
+  display: flex;
+  width: 100%;
+  min-height: 0;
+  position: relative;
+}
+.app-content {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+}
+
+.col {
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.list-col {
+  width: 258px;
+  border-right: 1px solid var(--border);
+  background: var(--panel);
+}
+.detail-col {
+  flex: 1;
+  background: var(--bg);
+}

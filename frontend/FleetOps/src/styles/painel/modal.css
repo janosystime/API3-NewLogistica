@@ -1,0 +1,97 @@
+.modal-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+}
+.modal-card {
+  width: 380px;
+  max-width: 90%;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.modal-header h4 {
+  font-size: 15px;
+}
+.modal-copy {
+  font-size: 12.5px;
+  color: var(--muted);
+  line-height: 1.5;
+  margin: 0;
+}
+.modal-score select {
+  font-family: inherit;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 6px;
+  padding: 6px 8px;
+  width: 70px;
+}
+.modal-card textarea {
+  font-family: inherit;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 8px;
+  padding: 9px 11px;
+  font-size: 12.5px;
+  min-height: 70px;
+  resize: vertical;
+}
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+.import-hint {
+  display: block;
+  font-size: 10.5px;
+  color: var(--muted);
+}
+.import-result {
+  font-size: 12.5px;
+  line-height: 1.5;
+  margin: 0;
+  padding: 8px 10px;
+  border-radius: 8px;
+}
+.import-success {
+  color: #2fbf71;
+  background: rgba(47, 191, 113, 0.14);
+}
+.import-partial {
+  color: #f0a93a;
+  background: rgba(240, 169, 58, 0.14);
+}
+.import-error {
+  color: #e5484d;
+  background: rgba(229, 72, 77, 0.14);
+}
+.import-errors {
+  margin: 0;
+  padding: 8px 10px 8px 26px;
+  font-size: 11.5px;
+  color: var(--muted);
+  line-height: 1.6;
+  max-height: 140px;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.import-errors li strong {
+  color: var(--text);
+}
