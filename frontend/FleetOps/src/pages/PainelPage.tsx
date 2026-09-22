@@ -1,4 +1,4 @@
-import type { Role, Theme } from "../types/app";
+import type { Theme } from "../types/app";
 import type { StatusFilter } from "../types/driver";
 import { useState } from "react";
 import DriverDetail from "../components/drivers/DriverDetail";
@@ -8,18 +8,16 @@ import Sidebar from "../components/layout/Sidebar";
 import EvalModal from "../components/modals/EvalModal";
 import ImportModal from "../components/modals/ImportModal";
 import { useDrivers } from "../hooks/useDrivers";
+import useUsuario from "../hooks/useUsuario";
 
 type Props = {
-  role: Role;
-  userName: string;
   theme: Theme;
   onToggleTheme: () => void;
-  onLogout: () => void;
 };
 
-export default function PainelPage({ role, userName, theme, onToggleTheme, onLogout }: Props) {
-  const { drivers, sortedDrivers, selected, selectedId, select, closeDetail, changeStatus, concludeRoute, reset, importar } = useDrivers(userName);
-
+export default function PainelPage({ theme, onToggleTheme }: Props) {
+  const { session, setSession, setIsAuthenticated } = useUsuario();
+  const { drivers, sortedDrivers, selected, selectedId, select, closeDetail, changeStatus, reset, importar } = useDrivers(session.userName);
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
   const [importOpen, setImportOpen] = useState(false);
@@ -27,22 +25,20 @@ export default function PainelPage({ role, userName, theme, onToggleTheme, onLog
 
   const evalDriver = drivers.find(d => d.id === evalDriverId) ?? null;
 
-  function handleConcludeRoute(nota: number, obs: string) {
-    if (!evalDriverId)
-      return;
-    concludeRoute(evalDriverId, nota, obs);
-    setEvalDriverId(null);
+  function logout() {
+    setSession({ userName: "", role: "operador" });
+    setIsAuthenticated(false);
   }
 
   return (
     <>
       <div className="app-shell">
         <Sidebar
-          role={role}
-          userName={userName}
+          role={session.role}
+          userName={session.userName}
           theme={theme}
           onToggleTheme={onToggleTheme}
-          onLogout={onLogout}
+          onLogout={logout}
           onReset={reset}
           onImport={() => setImportOpen(true)}
         />
@@ -54,7 +50,7 @@ export default function PainelPage({ role, userName, theme, onToggleTheme, onLog
           <div className="col detail-col">
             <DriverDetail
               driver={selected}
-              role={role}
+              role={session.role}
               onChangeStatus={changeStatus}
               onOpenEvalModal={setEvalDriverId}
               onClose={selected ? closeDetail : null}
@@ -71,7 +67,7 @@ export default function PainelPage({ role, userName, theme, onToggleTheme, onLog
           }}
         />
       )}
-      {evalDriver && <EvalModal driver={evalDriver} onSubmit={handleConcludeRoute} onClose={() => setEvalDriverId(null)} />}
+      {evalDriver && <EvalModal driver={evalDriver} onClose={() => setEvalDriverId(null)} />}
     </>
   );
 }
