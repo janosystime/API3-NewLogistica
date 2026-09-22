@@ -1,0 +1,11 @@
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap");
+
+@import "./base.css";
+@import "./buttons.css";
+@import "./brand.css";
+@import "./login.css";
+@import "./modal.css";
+@import "./nav.css";
+@import "./layout.css";
+@import "./driverList.css";
+@import "./driverDetail.css";

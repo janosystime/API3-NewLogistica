@@ -1,0 +1,55 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+/* Casca + tokens de tema */
+.shell {
+  --bg: #14181c;
+  --panel: #1b2025;
+  --panel-2: #21262c;
+  --border: #2c3238;
+  --text: #edeff1;
+  --muted: #8a9099;
+  --accent: #ff6b35;
+  font-family: "Inter", sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  min-height: 100vh;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.shell.theme-light {
+  --bg: #f5f6f8;
+  --panel: #ffffff;
+  --panel-2: #f1f2f4;
+  --border: #e1e4e8;
+  --text: #171a1d;
+  --muted: #6a7178;
+}
+
+.canvas {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+}
+h1,
+h2,
+h3,
+h4 {
+  font-family: "Oswald", sans-serif;
+  letter-spacing: 0.2px;
+  margin: 0;
+  font-weight: 600;
+}

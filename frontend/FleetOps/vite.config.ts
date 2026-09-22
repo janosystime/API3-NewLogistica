@@ -8,4 +8,9 @@ export default defineConfig({
     react(),
     babel({ presets: [reactCompilerPreset()] }),
   ],
+  server: {
+    proxy: {
+      "/arquivo": "http://localhost:8080",
+    },
+  },
 });
