@@ -16,6 +16,7 @@ export default function EvalModal({ driver, onSubmit, onClose }: Props) {
     <Modal title={`Concluir rota · ${driver.nome}`} onClose={onClose}>
       <p className="modal-copy">
         Registre a avaliação do frete antes de liberar
+        {" "}
         {driver.nome.split(" ")[0]}
         {" "}
         como disponível.
