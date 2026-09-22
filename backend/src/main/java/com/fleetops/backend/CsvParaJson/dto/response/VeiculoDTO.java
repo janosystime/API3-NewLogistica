@@ -1,4 +1,4 @@
-package com.fleetops.backend.CsvParaJson.dto;
+package com.fleetops.backend.CsvParaJson.dto.response;
 
 import com.univocity.parsers.annotations.Parsed;
 import jakarta.validation.constraints.NotBlank;

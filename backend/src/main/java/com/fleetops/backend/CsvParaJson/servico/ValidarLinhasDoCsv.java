@@ -1,7 +1,7 @@
 package com.fleetops.backend.CsvParaJson.servico;
 
-import com.fleetops.backend.CsvParaJson.dto.ErroLinhasDoCsv;
-import com.fleetops.backend.CsvParaJson.dto.ResultadoLinhasDoCsv;
+import com.fleetops.backend.CsvParaJson.dto.response.ErroLinhasDoCsv;
+import com.fleetops.backend.CsvParaJson.dto.response.ResultadoLinhasDoCsv;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;

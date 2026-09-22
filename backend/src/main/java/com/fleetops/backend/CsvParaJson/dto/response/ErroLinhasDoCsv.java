@@ -1,4 +1,4 @@
-package com.fleetops.backend.CsvParaJson.dto;
+package com.fleetops.backend.CsvParaJson.dto.response;
 
 public class ErroLinhasDoCsv {
     private Long Linha;
