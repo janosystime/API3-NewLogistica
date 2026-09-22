@@ -2,15 +2,22 @@ import type { Role, Theme } from "../types/app";
 import { LogIn } from "lucide-react";
 import { useState } from "react";
 import RouteNetworkBackground from "../components/login/RouteNetworkBackground";
+import useUsuario from "../hooks/useUsuario";
 
 type Props = {
   theme: Theme;
-  onLogin: (role: Role, userName: string) => void;
 };
 
-export default function LoginPage({ theme, onLogin }: Props) {
+export default function LoginPage({ theme }: Props) {
   const [user, setUser] = useState("");
   const [role, setRole] = useState<Role>("operador");
+  const { setSession, setIsAuthenticated } = useUsuario();
+
+  function handleLogin(role: Role, userName: string) {
+    setSession({ role, userName });
+    setIsAuthenticated(true);
+  }
+
   return (
     <div className="login-screen">
       <RouteNetworkBackground theme={theme} />
@@ -41,9 +48,8 @@ export default function LoginPage({ theme, onLogin }: Props) {
             <button className={role === "gerente" ? "active" : ""} onClick={() => setRole("gerente")}>Gerência</button>
           </div>
         </div>
-        <button className="btn-primary full" onClick={() => onLogin(role, user || "Você")}>
+        <button className="btn-primary full" onClick={() => handleLogin(role, user || "Você")}>
           <LogIn size={16} />
-          {" "}
           Entrar
         </button>
       </div>
