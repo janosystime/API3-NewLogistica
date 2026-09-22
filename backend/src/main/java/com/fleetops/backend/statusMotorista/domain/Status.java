@@ -1,8 +1,8 @@
 package com.fleetops.backend.statusMotorista.domain;
 
 public enum Status {
-    Disponível,
-    Indisponível,
+    Disponivel,
     Em_Rota,
+    Indisponivel,
     Indesejado
 }
