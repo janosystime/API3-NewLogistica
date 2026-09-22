@@ -3,7 +3,6 @@ package com.fleetops.backend.CsvParaJson.servico;
 import com.fleetops.backend.CsvParaJson.dto.ResultadoLinhasDoCsv;
 import com.univocity.parsers.common.processor.BeanListProcessor;
 import com.univocity.parsers.csv.CsvParser;
-import jakarta.websocket.server.PathParam;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -24,7 +23,7 @@ public class CsvParaJson<T> {
     @Autowired
     private ValidarLinhasDoCsv<T> validador;
 
-    public ResultadoLinhasDoCsv<T> RetornarJson(@PathParam("arquivo") MultipartFile arquivo, Class<T> tipo) {
+    public ResultadoLinhasDoCsv<T> RetornarJson(MultipartFile arquivo, Class<T> tipo) {
 
         List<T> objetos = this.LerCsv(arquivo, tipo);
 
