@@ -18,8 +18,8 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noEmit": true,
-    "verbatimModuleSyntax": true,
-    "erasableSyntaxOnly": true,
+    "verbatimModuleSyntax": false,
+    "erasableSyntaxOnly": false,
     "skipLibCheck": true
   },
   "include": ["src"]
