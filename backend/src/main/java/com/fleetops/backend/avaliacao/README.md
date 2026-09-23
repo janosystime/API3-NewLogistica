@@ -6,9 +6,13 @@ Documentação das alterações feitas no backend para o módulo de avaliações
 O QUE FOI IMPLEMENTADO
 --------------------------------------------------
 
-SCRUM-27 : Estrutura de dados (entidade + tabela) para armazenar avaliações
-SCRUM-28 : Rota POST /api/avaliacoes que recebe nota + feedback e salva no banco
-SCRUM-48 : Documentação automática com SpringDoc (Swagger UI)
+SCRUM-47 : Integração de mudança de status
+
+Atualização: banco de dados padrão migrado de H2 para MySQL, alinhando o
+módulo com a stack oficial do projeto. Nenhuma classe do pacote avaliacao
+precisou mudar — a troca é só de configuração (application.properties),
+já que a entidade usa tipos padrão (IDENTITY, TEXT) compatíveis com os
+dois bancos.
 
 Campos da avaliação:
 - id            (Long, PK, gerado automaticamente)
@@ -50,7 +54,7 @@ Isso facilita a migração de monorepo para multi-repo / microsserviço na próx
 
 Arquivos de suporte:
 - config/OpenApiConfig.java          → configuração do SpringDoc
-- src/main/resources/application.properties → H2 (padrão) + MySQL (comentado)
+- src/main/resources/application.properties → MySQL (padrão) + H2 (comentado)
 
 --------------------------------------------------
 COMO RODAR
@@ -59,8 +63,22 @@ COMO RODAR
 Pré-requisitos:
 - JDK 17 (ou 21)
 - Maven Wrapper já incluso (mvnw)
+- MySQL 8.x rodando localmente (ou em container)
 
-1. Subir a aplicação:
+1. Criar o banco no MySQL:
+
+   CREATE DATABASE fleetops;
+
+2. Conferir as credenciais em src/main/resources/application.properties:
+
+   spring.datasource.url=jdbc:mysql://localhost:3306/fleetops?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+   spring.datasource.username=root
+   spring.datasource.password=sua_senha
+
+   Ajuste username/password para o usuário do seu MySQL local.
+   A tabela avaliacoes_frete é criada automaticamente (ddl-auto=update).
+
+3. Subir a aplicação:
 
    cd backend
 
@@ -69,15 +87,11 @@ Pré-requisitos:
    ./mvnw spring-boot:run
 
    # Windows
-   mvnw.cmd spring-boot:run
+   .\mvnw.cmd spring-boot:run
 
 A aplicação sobe em: http://localhost:8080
 
-Por padrão usa H2 em memória (não precisa de MySQL).
-Console H2: http://localhost:8080/h2-console
-(JDBC URL: jdbc:h2:mem:fleetops | User: sa | Senha: vazia)
-
-2. Ver a documentação (SCRUM-48):
+4. Ver a documentação (SCRUM-48):
 
    Swagger UI    → http://localhost:8080/swagger-ui.html
    OpenAPI JSON  → http://localhost:8080/api-docs
@@ -143,31 +157,32 @@ Resposta de erro (400):
 }
 
 --------------------------------------------------
-USAR MYSQL EM VEZ DE H2
+VOLTAR A USAR H2 (teste rápido sem MySQL)
 --------------------------------------------------
 
+Só faz sentido para testes locais rápidos, sem depender de um MySQL de pé.
 Edite src/main/resources/application.properties:
 
-1. Comente as linhas do H2
-2. Descomente e ajuste as do MySQL:
+1. Comente as linhas do MySQL
+2. Descomente as do H2:
 
-spring.datasource.url=jdbc:mysql://localhost:3306/fleetops?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-spring.datasource.username=root
-spring.datasource.password=sua_senha
-spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.datasource.url=jdbc:h2:mem:fleetops;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+spring.datasource.driver-class-name=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=
+spring.h2.console.enabled=true
+spring.h2.console.path=/h2-console
 
-Crie o banco antes:
-
-CREATE DATABASE fleetops;
-
-A tabela avaliacoes_frete é criada automaticamente (ddl-auto=update).
+Console H2: http://localhost:8080/h2-console
+(JDBC URL: jdbc:h2:mem:fleetops | User: sa | Senha: vazia)
 
 --------------------------------------------------
-DEPENDÊNCIAS ADICIONADAS
+DEPENDÊNCIAS ENVOLVIDAS
 --------------------------------------------------
 
 - springdoc-openapi-starter-webmvc-ui (2.8.5) → documentação Swagger
-- h2 (runtime) → banco em memória para desenvolvimento local
+- mysql-connector-j (runtime) → driver JDBC do banco padrão
+- h2 (runtime) → banco em memória, mantido só para a alternativa de teste rápido acima
 
 --------------------------------------------------
 PRÓXIMOS PASSOS (sugestão)
