@@ -6,6 +6,13 @@ Documentação das alterações feitas no backend para o módulo de avaliações
 O QUE FOI IMPLEMENTADO
 --------------------------------------------------
 
+SCRUM-47 : Integração de mudança de status
+
+Atualização: banco de dados padrão migrado de H2 para MySQL, alinhando o
+módulo com a stack oficial do projeto. Nenhuma classe do pacote avaliacao
+precisou mudar — a troca é só de configuração (application.properties),
+já que a entidade usa tipos padrão (IDENTITY, TEXT) compatíveis com os
+dois bancos.
 SCRUM-27 : Estrutura de dados (entidade + tabela) para armazenar avaliações
 SCRUM-28 : Rota POST /api/avaliacoes que recebe nota + feedback e salva no banco
 SCRUM-48 : Documentação automática com SpringDoc (Swagger UI)
@@ -59,8 +66,22 @@ COMO RODAR
 Pré-requisitos:
 - JDK 17 (ou 21)
 - Maven Wrapper já incluso (mvnw)
+- MySQL 8.x rodando localmente (ou em container)
 
-1. Subir a aplicação:
+1. Criar o banco no MySQL:
+
+   CREATE DATABASE fleetops;
+
+2. Conferir as credenciais em src/main/resources/application.properties:
+
+   spring.datasource.url=jdbc:mysql://localhost:3306/fleetops?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+   spring.datasource.username=root
+   spring.datasource.password=sua_senha
+
+   Ajuste username/password para o usuário do seu MySQL local.
+   A tabela avaliacoes_frete é criada automaticamente (ddl-auto=update).
+
+3. Subir a aplicação:
 
    cd backend
 

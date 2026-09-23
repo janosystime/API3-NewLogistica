@@ -1,3 +1,6 @@
+# Organização de pacotes e configuração global (OpenApiConfig + Datasource)
+
+Por que o OpenApiConfig e a configuração de banco ficam FORA do pacote avaliacao
 # Organização de pacotes e OpenApiConfig
 
 Por que o OpenApiConfig fica FORA do pacote avaliacao
@@ -53,7 +56,8 @@ O QUE CADA TIME FAZ
 - Cria o próprio pacote (ex: com.fleetops.backend.motorista)
 - Coloca entity, repository, service, controller e DTOs lá dentro
 - Usa @Tag no controller para aparecer no Swagger
-- NÃO cria outro OpenApiConfig
+- Reaproveita o datasource MySQL já configurado em application.properties
+- NÃO cria outro OpenApiConfig nem outro datasource
 
 --------------------------------------------------
 QUANDO VIRAR MICROSSERVIÇO
@@ -66,6 +70,7 @@ Até lá, um config global é o correto.
 RESUMO
 --------------------------------------------------
 
-- config/     → infraestrutura da aplicação (global)
-- avaliacao/  → domínio de avaliações (pronto para extrair)
-- outros/     → cada time no seu pacote, sem criar novo config
+- config/                         → infraestrutura da aplicação (global)
+- application.properties          → datasource (MySQL) + JPA + Swagger (global)
+- avaliacao/                      → domínio de avaliações (pronto para extrair)
+- outros/                         → cada time no seu pacote, sem criar novo config
