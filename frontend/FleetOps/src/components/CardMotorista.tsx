@@ -7,27 +7,35 @@ type PropriedadesCardMotorista = {
 };
 
 export function CardMotorista({ motorista, onAlterarStatus }: PropriedadesCardMotorista) {
+  
+  // 1. Corrigido para as palavras em MAIÚSCULAS do Java
   const obterCorStatus = (status: string) => {
-    if (status === "Disponível") {
-      return "bg-green";
+    switch (status) {
+      case "DISPONIVEL": return "bg-green";
+      case "EM_ROTA": return "bg-yellow";
+      case "INDISPONIVEL": return "bg-purple";
+      case "INDESEJADO": return "bg-red";
+      default: return "bg-gray";
     }
-    if (status === "Indisponível") {
-      return "bg-purple";
-    }
-    if (status === "Indesejado") {
-      return "bg-red";
-    }
-    if (status === "Indisponível em Rota") {
-      return "bg-yellow";
-    }
-    return "bg-gray";
   };
 
+  // 2. Criado para deixar o texto bonito no ecrã (com acentos)
+  const formatarNomeStatus = (status: string) => {
+    switch (status) {
+      case "DISPONIVEL": return "Disponível";
+      case "EM_ROTA": return "Em Rota";
+      case "INDISPONIVEL": return "Indisponível";
+      case "INDESEJADO": return "Indesejado";
+      default: return status;
+    }
+  };
+
+  // 3. Opções do Select corrigidas com os 'valores' idênticos ao banco de dados
   const opcoesStatus = [
-    { rotulo: "Disponível", valor: "Disponível" },
-    { rotulo: "Indisponível em Rota", valor: "Indisponível em Rota" },
-    { rotulo: "Indisponível (Outros)", valor: "Indisponível" },
-    { rotulo: "Indesejado", valor: "Indesejado" },
+    { rotulo: "Disponível", valor: "DISPONIVEL" },
+    { rotulo: "Em Rota", valor: "EM_ROTA" },
+    { rotulo: "Indisponível", valor: "INDISPONIVEL" },
+    { rotulo: "Indesejado", valor: "INDESEJADO" },
   ];
 
   return (
@@ -36,7 +44,7 @@ export function CardMotorista({ motorista, onAlterarStatus }: PropriedadesCardMo
         <div className="portrait-box">
           <div className="portrait-placeholder">
             <span className="portrait-initials">
-              {motorista.nome_motorista.charAt(0)}
+              {motorista.nome_motorista ? motorista.nome_motorista.charAt(0) : "?"}
             </span>
           </div>
         </div>
@@ -44,7 +52,7 @@ export function CardMotorista({ motorista, onAlterarStatus }: PropriedadesCardMo
 
         <div className="status-badge">
           <span className={`dot ${obterCorStatus(motorista.status)}`}></span>
-          <span>{motorista.status}</span>
+          <span>{formatarNomeStatus(motorista.status)}</span>
         </div>
 
         <div className="bottom-left-info">
@@ -53,11 +61,9 @@ export function CardMotorista({ motorista, onAlterarStatus }: PropriedadesCardMo
             <span>{motorista.contato_motorista}</span>
           </div>
           <div className="info-item">
-            <span className="icon">🛣️</span>
+            <span className="icon">🗺️</span>
             <span>
-              Rotas SP:
-              {" "}
-              {motorista.contador_rota_sp}
+              Rotas SP: {motorista.contador_rota_sp || 0}
             </span>
           </div>
         </div>
@@ -68,24 +74,23 @@ export function CardMotorista({ motorista, onAlterarStatus }: PropriedadesCardMo
           <h3 className="section-title">Veículo & Agregado</h3>
           <ul className="info-list">
             <li>
-              <strong>Tipo:</strong>
-              {" "}
-              {`${motorista.veiculo.tipo_veiculo} (${motorista.veiculo.subtipo_veiculo})`}
+              <strong>Tipo:</strong>{" "}
+              {motorista.veiculo 
+                ? `${motorista.veiculo.tipo_veiculo} (${motorista.veiculo.subtipo_veiculo || ""})` 
+                : "Não informado"}
             </li>
             <li>
-              <strong>Placa:</strong>
-              {" "}
-              {motorista.veiculo.placa_veiculo}
+              <strong>Placa:</strong>{" "}
+              {motorista.veiculo ? motorista.veiculo.placa_veiculo : "Não informada"}
+            </li>
+            {/* Proteção adicionada aqui para evitar Crash caso o agregado não venha no JSON */}
+            <li>
+              <strong>Agregado:</strong>{" "}
+              {motorista.agregado ? motorista.agregado.nome_agregado : "Não informado (Oculto no BD)"}
             </li>
             <li>
-              <strong>Agregado:</strong>
-              {" "}
-              {motorista.agregado.nome_agregado}
-            </li>
-            <li>
-              <strong>Contato:</strong>
-              {" "}
-              {motorista.agregado.contato_agregado}
+              <strong>Contato:</strong>{" "}
+              {motorista.agregado ? motorista.agregado.contato_agregado : "Não informado"}
             </li>
           </ul>
         </div>
@@ -96,13 +101,14 @@ export function CardMotorista({ motorista, onAlterarStatus }: PropriedadesCardMo
             <div className="manifesto-box">
               <span className="manifesto-label">Data</span>
               <span className="manifesto-value">
-                {new Date(motorista.ultimo_manifesto).toLocaleDateString("pt-BR")}
+                {motorista.ultimo_manifesto 
+                  ? new Date(motorista.ultimo_manifesto).toLocaleDateString("pt-BR")
+                  : "Sem data"}
               </span>
             </div>
           </div>
         </div>
 
-        {/* NOVA SESSÃO: ALTERAR STATUS COM DROPDOWN */}
         <div className="info-section">
           <h3 className="section-title">Alterar Status</h3>
           <div className="status-dropdown-container">
@@ -110,9 +116,9 @@ export function CardMotorista({ motorista, onAlterarStatus }: PropriedadesCardMo
             <select
               className="status-dropdown"
               value={motorista.status}
-              onChange={e => onAlterarStatus(motorista.id_motorista, e.target.value)}
+              onChange={(e) => onAlterarStatus(motorista.id_motorista, e.target.value)}
             >
-              {opcoesStatus.map(opcao => (
+              {opcoesStatus.map((opcao) => (
                 <option key={opcao.valor} value={opcao.valor}>
                   {opcao.rotulo}
                 </option>
