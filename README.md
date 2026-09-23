@@ -1,6 +1,8 @@
 <p align="center">
       <img src="https://github.com/user-attachments/assets/6a2c0103-81cb-4431-81b9-643b9f40add8" alt="logo da Janosys" width="200">
       <p align="center">"Entre o ontem e o amanhã, soluções que permanecem."</p>
+      <img src="./docs/imagens/LogoJanos_vetor.png" alt="logo da Janos Logística Integrada" width="600">
+</p>
 
 ---
 

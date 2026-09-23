@@ -1,0 +1,15 @@
+services:
+  mysql-db:
+    image: mysql:8.0
+    container_name: janos_mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: janos_staged     # Nome do banco configurado no seu application.properties
+      MYSQL_ROOT_PASSWORD: root        # Senha padrão de desenvolvimento
+    ports:
+      - "3306:3306"                    # Mapeia a porta do container para o seu Linux
+    volumes:
+      - mysql_data:/var/lib/mysql      # Garante que os dados não sumam ao desligar
+
+volumes:
+  mysql_data:
