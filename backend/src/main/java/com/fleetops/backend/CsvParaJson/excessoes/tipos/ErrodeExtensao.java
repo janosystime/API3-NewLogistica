@@ -1,7 +1,7 @@
 package com.fleetops.backend.CsvParaJson.excessoes.tipos;
 
-public class ErrodeExtensao  extends RuntimeException {
-      private String mensagem;
+public class ErrodeExtensao extends RuntimeException {
+    private String mensagem;
 
     public ErrodeExtensao(String titulo, String mensagem) {
         super(titulo);

@@ -1,7 +1,6 @@
 package com.fleetops.backend.CsvParaJson.servico;
 
 import com.fleetops.backend.CsvParaJson.dto.response.ResultadoLinhasDoCsv;
-import com.fleetops.backend.CsvParaJson.excessoes.tipos.ErroDeEncoding;
 import com.fleetops.backend.CsvParaJson.excessoes.tipos.ErrodeExtensao;
 import com.fleetops.backend.CsvParaJson.excessoes.tipos.NaoFoiPossivelAcharEncoding;
 import com.fleetops.backend.CsvParaJson.excessoes.tipos.NaoFoiPossivelLerArquivo;
@@ -10,7 +9,7 @@ import com.univocity.parsers.csv.CsvParser;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.nio.charset.StandardCharsets;
+import java.nio.charset.Charset;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,10 +41,12 @@ public class CsvParaJson<T> {
     private List<T> LerCsv(MultipartFile arquivo, Class<T> tipo) {
         BeanListProcessor<T> processador = new BeanListProcessor<>(tipo);
         CsvParser parser = criadorDeParser.getParser(processador);
+
         if (!verificadorDeExtensao.ECsv(arquivo.getOriginalFilename())) {
             throw new ErrodeExtensao("Esse arquivo não possui a extensão correta", "Só permitimos arquivos .csv");
         }
-        try {
+
+        /*  try {
             if (!detectoEncoding.detectarEncoding(arquivo.getBytes())) {
                 throw new ErroDeEncoding(
                         "O arquivo " + arquivo.getOriginalFilename() + " não possui encoding UTF-8",
@@ -55,8 +56,17 @@ public class CsvParaJson<T> {
         } catch (IOException e) {
             throw new NaoFoiPossivelAcharEncoding(
                     "A leitura desse arquivo falhou", "Não foi possivel encontrar o encoding");
+        }*/
+        String encoding;
+        try {
+            encoding = detectoEncoding.detectarEncoding(arquivo.getBytes());
+        } catch (IOException e) {
+            throw new NaoFoiPossivelAcharEncoding(
+                    "A leitura desse arquivo falhou", "Não foi possivel encontrar o encoding");
         }
-        try (Reader reader = new InputStreamReader(arquivo.getInputStream(), StandardCharsets.UTF_8)) {
+        ;
+        System.out.println(encoding);
+        try (Reader reader = new InputStreamReader(arquivo.getInputStream(), Charset.forName(encoding))) {
             parser.parse(reader);
         } catch (IOException e) {
             throw new NaoFoiPossivelLerArquivo(
