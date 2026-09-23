@@ -40,9 +40,11 @@ Abaixo está o mapa completo de todas as rotas REST implementadas no pacote `com
 | | `POST` | `/api/veiculos` | JSON com veículo e `idAgregado` | `201 Created` | Cadastra um novo veículo vinculado a uma transportadora parceira. | [Ver JSON](#exemplo-de-json-para-criação-post-apiveiculos) |
 | **`MotoristaControles`** | `GET` | `/api/motoristas` | *Nenhum* | `200 OK` | Lista todos os motoristas cadastrados na base. | [Ver tabela](#6-tabela-4-motorista-motorista-parceiro) |
 | | `GET` | `/api/motoristas/disponiveis` | *Nenhum* | `200 OK` | **Regra Central Newelog:** Filtra e retorna apenas motoristas com status `"Disponível"` para alocação rápida sem duplicidade. | [Ver tabela](#6-tabela-4-motorista-motorista-parceiro) |
+| | `GET` | `/api/motoristas/disponiveis` | *Nenhum* | `200 OK` | **Regra Central Newelog:** Filtra e retorna apenas motoristas com status `"DISPONIVEL"` em tempo real para alocação rápida sem duplicidade. | [Ver tabela](#6-tabela-4-motorista-motorista-parceiro) |
 | | `GET` | `/api/motoristas/{id}` | `id` (na URL) | `200 OK` / `404` | Retorna o motorista pelo ID com dados do veículo (1:1) e agregado. | [Ver tabela](#6-tabela-4-motorista-motorista-parceiro) |
 | | `POST` | `/api/motoristas` | JSON com motorista, `idVeiculo` e `idAgregado` | `201 Created` | Cadastra um novo motorista parceiro vinculado à frota. | [Ver JSON](#exemplo-de-json-para-criação-post-apimotoristas) |
 | | `PATCH` | `/api/motoristas/{id}/status` | JSON: `{"status": "Em Rota"}` | `200 OK` / `404` | **Disponibilidade Dinâmica:** Altera rapidamente o status operacional (`Disponível`, `Em Rota`, `Folga`, `Manutenção`, `Inativo`). | [Ver JSON](#exemplo-de-atualização-de-status-put-ou-patch-apimotoristas1) |
+| | `PATCH` | `/api/motoristas/{id}/status` | JSON: `{"status": "EM_ROTA"}` | `200 OK` / `404` | **Disponibilidade Dinâmica:** Altera rapidamente o status operacional (`DISPONIVEL`, `EM_ROTA`, `INDISPONIVEL`, `INDESEJADO`). | [Ver JSON](#exemplo-de-atualização-de-status-put-ou-patch-apimotoristas1) |
 | **`ManifestoControles`** | `GET` | `/api/manifestos` | *Nenhum* | `200 OK` | Retorna a listagem histórica de viagens e manifestos de carga emitidos. | [Ver tabela](#7-tabela-5-manifesto-registro-de-viagem--frete) |
 | | `GET` | `/api/manifestos/{id}` | `id` (na URL) | `200 OK` / `404` | Detalha uma viagem específica, seus custos e profissionais envolvidos. | [Ver tabela](#7-tabela-5-manifesto-registro-de-viagem--frete) |
 | | `POST` | `/api/manifestos` | JSON com valores, `idMotorista`, `idVeiculo`, `idAgregado` | `201 Created` | Registra uma nova operação de transporte, viabilizando o cálculo de rentabilidade. | [Ver JSON](#exemplo-de-json-para-criação-post-apimanifestos) |
@@ -70,12 +72,14 @@ flowchart TD
         B1["GET /api/motoristas/disponiveis<br>(Operador busca motoristas livres)"]
         B2["POST /api/manifestos<br>(Cria frete com motorista e veículo)"]
         B3["PATCH /api/motoristas/{id}/status<br>(Altera status para 'Em Rota')"]
+        B3["PATCH /api/motoristas/{id}/status<br>(Altera status para 'EM_ROTA')"]
         A4 --> B1
         B1 --> B2 --> B3
     end
 
     subgraph EncerramentoGamificacao["3. Encerramento e Gamificação"]
         C1["PATCH /api/motoristas/{id}/status<br>(Retorna status para 'Disponível')"]
+        C1["PATCH /api/motoristas/{id}/status<br>(Retorna status para 'DISPONIVEL')"]
         C2["POST /api/avaliacoes<br>(Operador avalia a entrega com nota e feedback)"]
         B3 --> C1 --> C2
     end
@@ -89,6 +93,8 @@ flowchart TD
 2. **`UsuarioControles`:** Centraliza o cadastro de operadores e gestores, viabilizando a auditoria e rastreabilidade de quem cadastra veículos, despacha motoristas e avalia o serviço.
 3. **`VeiculoControles`:** Controla a frota agregada categorizada pelas tipologias da Newelog (*Fiorino, Van, VUC, 3/4, Toco, Truck, Carreta*), garantindo a escolha do veículo com cubagem e peso adequados para a carga.
 4. **`MotoristaControles`:** **Coração operacional da plataforma.** Fornece a busca otimizada por profissionais disponíveis (`/disponiveis`) e atualização de status em tempo real (`/status`), eliminando a perda de tempo com contatos duplicados por múltiplos operadores.
+3. **`VeiculoControles`:** Controla a frota agregada categorizada pelas tipologias da Newelog (`FIORINO`, `VAN`, `VUC`, `TRES_QUARTOS`, `TOCO`, `TRUCK`, `CARRETA`), fornecendo busca filtrada (`/tipo/{tipo}`) para escolha ágil do veículo adequado à cubagem da carga.
+4. **`MotoristaControles`:** **Coração operacional da plataforma.** Fornece a busca otimizada por profissionais disponíveis (`/disponiveis`) e atualização de status em tempo real (`/{id}/status`), eliminando a perda de tempo com contatos duplicados por múltiplos operadores.
 5. **`ManifestoControles`:** Registra as viagens realizadas com seus valores brutos e fretes pagos, servindo de base para calcular a rentabilidade da operação ($\text{Valor Recebido} - \text{Custos}$) e a média de utilização mensal.
 6. **`AvaliacaoControles`:** Alimenta a gamificação da Newelog, permitindo avaliar a pontualidade e o estado da entrega, calculando a nota média de 0.0 a 10.0 exibida nos dashboards gerenciais.
 
@@ -203,6 +209,14 @@ Armazena os veículos da frota agregada. Cada veículo pertence obrigatoriamente
 | `tipo_veiculo`           | `tipoVeiculo`           | `VARCHAR(50)` | `String`                |     Não     | Máx. 50 (Categorias da Newelog)                    | Categoria: `Fiorino`, `Van`, `VUC`, `3/4`, `Toco`, `Truck`, `Carreta`. |
 | `subtipo_veiculo`        | `subtipoVeiculo`        | `VARCHAR(50)` | `String`                |     Não     | Máx. 50                                            | Tipo de carroceria: `Baú`, `Sider`, `Refrigerado`, `Aberto`.           |
 | `fk_id_agregado`         | `agregado`              | `INT`         | `Object` (`idAgregado`) |   **Sim**   | `FOREIGN KEY` referenciando `agregado`             | Parceiro frotista dono deste veículo.                                  |
+| Coluna BD (`schema.sql`) | Propriedade JSON / Java | Tipo SQL      | Tipo Java / JSON                    | Obrigatório | Restrições / Validações                            | Descrição                                                              |
+| :----------------------- | :---------------------- | :------------ | :---------------------------------- | :---------: | :------------------------------------------------- | :--------------------------------------------------------------------- |
+| `id_veiculo`             | `idVeiculo`             | `INT`         | `Long` / `Number`                   | Não (Auto)  | `PRIMARY KEY`, `AUTO_INCREMENT`                    | Identificador único do automóvel.                                      |
+| `placa_veiculo`          | `placaVeiculo`          | `VARCHAR(7)`  | `String`                            |   **Sim**   | `UNIQUE`, 7 caracteres (Mercosul ou padrão antigo) | Placa do veículo (ex: `ABC1D23` ou `ABC1234`).                         |
+| `ano_fabricacao`         | `anoFabricacao`         | `INT`         | `Integer` / `Number`                |     Não     | Ano numérico (ex: `2021`)                          | Ano em que o veículo foi fabricado.                                    |
+| `tipo_veiculo`           | `tipoVeiculo`           | `VARCHAR(50)` | `Enum (TipoVeiculos)` / `String`    |     Não     | Categorias Newelog (Enum)                          | Enum: `FIORINO`, `VAN`, `VUC`, `TRES_QUARTOS`, `TOCO`, `TRUCK`, `CARRETA`. |
+| `subtipo_veiculo`        | `subtipoVeiculo`        | `VARCHAR(50)` | `String`                            |     Não     | Máx. 50                                            | Tipo de carroceria: `Baú`, `Sider`, `Refrigerado`, `Aberto`.           |
+| `fk_id_agregado`         | `agregado`              | `INT`         | `Object` (`idAgregado`)             |   **Sim**   | `FOREIGN KEY` referenciando `agregado`             | Parceiro frotista dono deste veículo.                                  |
 
 ### Exemplo de JSON para Criação (`POST /api/veiculos`)
 
@@ -211,6 +225,7 @@ Armazena os veículos da frota agregada. Cada veículo pertence obrigatoriamente
   "placaVeiculo": "VXX3L65",
   "anoFabricacao": 2021,
   "tipoVeiculo": "Fiorino",
+  "tipoVeiculo": "FIORINO",
   "subtipoVeiculo": "Baú Refrigerado",
   "agregado": {
     "idAgregado": 1
@@ -226,6 +241,7 @@ Armazena os veículos da frota agregada. Cada veículo pertence obrigatoriamente
   "placaVeiculo": "VXX3L65",
   "anoFabricacao": 2021,
   "tipoVeiculo": "Fiorino",
+  "tipoVeiculo": "FIORINO",
   "subtipoVeiculo": "Baú Refrigerado",
   "agregado": {
     "idAgregado": 1,
@@ -251,11 +267,24 @@ O motorista é o centro operacional da plataforma da Newelog. Possui vínculo co
 | `cpf_motorista`          | `cpfMotorista`          | `VARCHAR(11)`  | `String`                |   **Sim**   | `UNIQUE`, 11 dígitos numéricos         | CPF sem pontuação.                                                                       |
 | `contato_motorista`      | `contatoMotorista`      | `VARCHAR(20)`  | `String`                |     Não     | Máx. 20 caracteres                     | Telefone celular ou WhatsApp para acionamento rápido.                                    |
 | `status`                 | `status`                | `VARCHAR(30)`  | `String`                |     Não     | Default: `'Disponível'`                | Estado operacional: `'Disponível'`, `'Em Rota'`, `'Folga'`, `'Manutenção'`, `'Inativo'`. |
+| `status`                 | `status`                | `VARCHAR(30)`  | `Enum (StatusMotorista)` / `String` |     Não     | Default: `'DISPONIVEL'`                | Enum: `'DISPONIVEL'`, `'EM_ROTA'`, `'INDISPONIVEL'`, `'INDESEJADO'`. |
 | `ultimo_manifesto`       | `ultimoManifesto`       | `DATE`         | `String` (ISO Date)     |     Não     | Formato `YYYY-MM-DD`                   | Data da última viagem realizada pelo profissional.                                       |
 | `contador_rota_sp`       | `contadorRotaSp`        | `INT`          | `Integer` / `Number`    |     Não     | Default: `0`                           | Quantidade de viagens que envolveram o estado/região de SP.                              |
 | `nota_media`             | `notaMedia`             | `FLOAT`        | `Float` / `Number`      |     Não     | Default: `0.0` (de 0.0 a 10.0)         | Média calculada das avaliações recebidas.                                                |
 | `fk_id_veiculo`          | `veiculo`               | `INT`          | `Object` (`idVeiculo`)  |     Não     | `UNIQUE`, `FOREIGN KEY` (1:1)          | Veículo padrão conduzido por este motorista.                                             |
 | `fk_id_agregado`         | `agregado`              | `INT`          | `Object` (`idAgregado`) |   **Sim**   | `FOREIGN KEY` referenciando `agregado` | Agregado ao qual o motorista é contratado/associado.                                     |
+| Coluna BD (`schema.sql`) | Propriedade JSON / Java | Tipo SQL       | Tipo Java / JSON                    | Obrigatório | Restrições / Validações                | Descrição                                                              |
+| :----------------------- | :---------------------- | :------------- | :---------------------------------- | :---------: | :------------------------------------- | :--------------------------------------------------------------------- |
+| `id_motorista`           | `idMotorista`           | `INT`          | `Long` / `Number`                   | Não (Auto)  | `PRIMARY KEY`, `AUTO_INCREMENT`        | Identificador único do motorista.                                      |
+| `nome_motorista`         | `nomeMotorista`         | `VARCHAR(100)` | `String`                            |   **Sim**   | Máx. 100 caracteres, `@NotBlank`       | Nome completo do motorista.                                            |
+| `cpf_motorista`          | `cpfMotorista`          | `VARCHAR(11)`  | `String`                            |   **Sim**   | `UNIQUE`, 11 dígitos numéricos         | CPF sem pontuação.                                                     |
+| `contato_motorista`      | `contatoMotorista`      | `VARCHAR(20)`  | `String`                            |     Não     | Máx. 20 caracteres                     | Telefone celular ou WhatsApp para acionamento rápido.                  |
+| `status`                 | `status`                | `VARCHAR(30)`  | `Enum (StatusMotorista)` / `String` |     Não     | Default: `'DISPONIVEL'`                | Enum: `'DISPONIVEL'`, `'EM_ROTA'`, `'INDISPONIVEL'`, `'INDESEJADO'`.  |
+| `ultimo_manifesto`       | `ultimoManifesto`       | `DATE`         | `String` (ISO Date)                 |     Não     | Formato `YYYY-MM-DD`                   | Data da última viagem realizada pelo profissional.                     |
+| `contador_rota_sp`       | `contadorRotaSp`        | `INT`          | `Integer` / `Number`                |     Não     | Default: `0`                           | Quantidade de viagens que envolveram o estado/região de SP.            |
+| `nota_media`             | `notaMedia`             | `FLOAT`        | `Float` / `Number`                  |     Não     | Default: `0.0` (de 0.0 a 10.0)         | Média calculada das avaliações recebidas.                              |
+| `fk_id_veiculo`          | `veiculo`               | `INT`          | `Object` (`idVeiculo`)              |     Não     | `UNIQUE`, `FOREIGN KEY` (1:1)          | Veículo padrão conduzido por este motorista.                           |
+| `fk_id_agregado`         | `agregado`              | `INT`          | `Object` (`idAgregado`)             |   **Sim**   | `FOREIGN KEY` referenciando `agregado` | Agregado ao qual o motorista é contratado/associado.                   |
 
 ### Exemplo de JSON para Criação (`POST /api/motoristas`)
 
@@ -265,6 +294,7 @@ O motorista é o centro operacional da plataforma da Newelog. Possui vínculo co
   "cpfMotorista": "12345678901",
   "contatoMotorista": "12981112233",
   "status": "Disponível",
+  "status": "DISPONIVEL",
   "contadorRotaSp": 0,
   "notaMedia": 0.0,
   "veiculo": {
@@ -277,11 +307,14 @@ O motorista é o centro operacional da plataforma da Newelog. Possui vínculo co
 ```
 
 ### Exemplo de Atualização de Status (`PUT` ou `PATCH /api/motoristas/1`)
+### Exemplo de Atualização de Status (`PUT` ou `PATCH /api/motoristas/1/status`)
+### Exemplo de Atualização de Status (`PATCH /api/motoristas/1/status`)
 
 ```json
 {
   "status": "Em Rota",
   "ultimoManifesto": "2026-09-21"
+  "status": "EM_ROTA"
 }
 ```
 
