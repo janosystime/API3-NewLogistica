@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `motorista` (
   `nome_motorista` VARCHAR(100) NOT NULL,
   `cpf_motorista` VARCHAR(11) UNIQUE NOT NULL,
   `contato_motorista` VARCHAR(20),
-  `status` VARCHAR(30) DEFAULT 'Disponível',
+  `status` VARCHAR(30) DEFAULT 'DISPONIVEL',
   `ultimo_manifesto` DATE,
   `contador_rota_sp` INT DEFAULT 0,
   `nota_media` FLOAT DEFAULT 0.0,

@@ -31,7 +31,8 @@ public class AvaliacaoControles {
 
     @GetMapping("/{id}")
     public ResponseEntity<Avaliacao> buscarPorId(@PathVariable Long id) {
-        return repositorio.findById(id)
+        return repositorio
+                .findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -42,4 +43,3 @@ public class AvaliacaoControles {
         return ResponseEntity.status(HttpStatus.CREATED).body(salva);
     }
 }
-

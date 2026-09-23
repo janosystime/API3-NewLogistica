@@ -1,6 +1,7 @@
 package com.fleetops.backend.controles;
 
 import com.fleetops.backend.entidades.Motorista;
+import com.fleetops.backend.entidades.StatusMotorista;
 import com.fleetops.backend.repositorios.MotoristaRepositorio;
 import java.util.List;
 import java.util.Map;
@@ -33,12 +34,13 @@ public class MotoristaControles {
 
     @GetMapping("/disponiveis")
     public List<Motorista> listarDisponiveis() {
-        return repositorio.findByStatus("Disponível");
+        return repositorio.findByStatus(StatusMotorista.DISPONIVEL);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Motorista> buscarPorId(@PathVariable Long id) {
-        return repositorio.findById(id)
+        return repositorio
+                .findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -51,10 +53,14 @@ public class MotoristaControles {
 
     @PatchMapping("/{id}/status")
     public ResponseEntity<Motorista> atualizarStatus(@PathVariable Long id, @RequestBody Map<String, String> payload) {
-        return repositorio.findById(id)
+        return repositorio
+                .findById(id)
                 .map(motorista -> {
                     if (payload.containsKey("status")) {
-                        motorista.setStatus(payload.get("status"));
+                        // Converte o texto recebido no JSON para o Enum correspondente:
+                        StatusMotorista novoStatus =
+                                StatusMotorista.valueOf(payload.get("status").toUpperCase());
+                        motorista.setStatus(novoStatus);
                     }
                     Motorista atualizado = repositorio.save(motorista);
                     return ResponseEntity.ok(atualizado);
@@ -62,4 +68,3 @@ public class MotoristaControles {
                 .orElse(ResponseEntity.notFound().build());
     }
 }
-

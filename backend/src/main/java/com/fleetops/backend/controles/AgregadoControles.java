@@ -31,7 +31,8 @@ public class AgregadoControles {
 
     @GetMapping("/{id}")
     public ResponseEntity<Agregado> buscarPorId(@PathVariable Long id) {
-        return repositorio.findById(id)
+        return repositorio
+                .findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -42,4 +43,3 @@ public class AgregadoControles {
         return ResponseEntity.status(HttpStatus.CREATED).body(salvo);
     }
 }
-

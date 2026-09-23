@@ -1,5 +1,6 @@
 package com.fleetops.backend.controles;
 
+import com.fleetops.backend.entidades.TipoVeiculos;
 import com.fleetops.backend.entidades.Veiculo;
 import com.fleetops.backend.repositorios.VeiculoRepositorio;
 import java.util.List;
@@ -31,7 +32,8 @@ public class VeiculoControles {
 
     @GetMapping("/{id}")
     public ResponseEntity<Veiculo> buscarPorId(@PathVariable Long id) {
-        return repositorio.findById(id)
+        return repositorio
+                .findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -41,5 +43,9 @@ public class VeiculoControles {
         Veiculo salvo = repositorio.save(novoVeiculo);
         return ResponseEntity.status(HttpStatus.CREATED).body(salvo);
     }
-}
 
+    @GetMapping("/tipo/{tipo}")
+    public List<Veiculo> listarPorTipo(@PathVariable TipoVeiculos tipo) {
+        return repositorio.findByTipoVeiculo(tipo);
+    }
+}

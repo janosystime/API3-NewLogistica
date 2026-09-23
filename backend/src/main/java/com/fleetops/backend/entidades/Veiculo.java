@@ -2,6 +2,8 @@ package com.fleetops.backend.entidades;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -40,9 +42,9 @@ public class Veiculo {
     @Column(name = "ano_fabricacao")
     private Integer anoFabricacao;
 
-    @Size(max = 50, message = "O tipo do veículo deve ter no máximo 50 caracteres")
-    @Column(name = "tipo_veiculo", length = 50)
-    private String tipoVeiculo;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo_veiculo", length = 30)
+    private TipoVeiculos tipoVeiculo;
 
     @Size(max = 50, message = "O subtipo do veículo deve ter no máximo 50 caracteres")
     @Column(name = "subtipo_veiculo", length = 50)
