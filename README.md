@@ -111,31 +111,30 @@ Projeto idealizado pela FATEC · SJC em conjunto com seus alunos, tendo como par
 ## 📋 Backlog do Produto <a id="backlog"></a>
 
 | Rank | Título | Prioridade | User Stories | Estimativa | Sprint | Épico |
-|-----|------|-----------|--------------|-----------|--------|--------|
-| <span style="color:green">1</span> | <span style="color:green">Consultar os status dos Motoristas</span> | <span style="color:green">ALTA [MVP]</span> | <span style="color:green">Como operador logístico, quero consultar o status de disponibilidade dos motoristas (tipo de veículo -> motorista) para uma determinada rota, para contatar diretamente apenas os que constam como disponíveis, evitando ligações aos que já estão com o status indisponível em rota ou indisponível;</span> | <span style="color:green">6</span> | <span style="color:green">1</span> | <span style="color:green">E1</span> |
+|------|--------|-----------|--------------|-----------|--------|--------|
+| 🟢 **1** | **Consultar os status dos Motoristas** | **ALTA [MVP]** | **Como operador logístico, quero consultar o status de disponibilidade dos motoristas (tipo de veículo -> motorista) para uma determinada rota, para contatar diretamente apenas os que constam como disponíveis, evitando ligações aos que já estão com o status indisponível em rota ou indisponível;** | **6** | **1** | **E1** |
 | 2 | Importação de Motoristas/Tipo de Veículo (.csv) | MÉDIA | Como operador logístico, quero importar o cadastro de veículos .csv (motorista/veículo), para que eu possa localizar e vincular um motorista à uma operação; | 6 | 1 | E2 |
 | 3 | Alterar os status dos Motoristas | MÉDIA | Como operador logístico, quero modificar o status de disponibilidade do agregado [Disponível / Em Rota / Indisponível, para que outro operador não precise confirmar novamente a disponibilidade com o agregado; | 5 | 1 | E1 |
 | 4 | Registrar Nota+Feedback | MÉDIA | Como operador logístico, quero registrar uma avaliação do frete realizado (nota + observação), para compor a gamificação do ranking avaliação; | 7 | 1 | E3 |
-| 5 | Expirar Indisponibilidade | MÉDIA | Como operador logístico, quero que o sistema mude automaticamente o status de motoristas inativos há muito tempo, para evitar que motoristas fiquem permanentemente esquecidos no status “indisponível”. | 4 | 2 | E1 |
-| 6 | Filtros por Tipo de Veículo | MÉDIA | Como operador logístico, quero um sistema com filtros de fácil identificação do tipos de veículos, para poder escolher com agilidade um motorista para realizar determinada rota; | 6 | 2 | E2 |
-| 7 | Fila de espera ordenada | ALTA | Como operador logístico, quero ordenar a lista de disponibilidade por fila de espera (tempo de manifesto mais antigo), para dar maior rotatividade dos motoristas; | 4 | 2 | E4(E1) |
-| 8 | Importar Manifesto (.csv) | MÉDIA | Como gerente operacional, quero importar o manifesto (MDF-e) do mês anterior a partir de um arquivo em .csv para compor a base de gamificação do ranking rentabilidade/utilização, sem digitação manual no sistema, prevenindo ao máximo a interferência humana; | 7 | 2 | E4 |
-| 9 | Acessar o Sistema por Tipo de Usuário | MÉDIA | Como usuário do sistema, quero poder acessar o sistema com login com perfis (Gerência/Operacional), para melhor controle e restrições dos acessos; | 5 | 2 | E5 |
-| 10 | Gerenciar Usuários | BAIXA | Como gerente operacional, quero gerenciar o cadastro de usuários (criar/editar/desativar), para garantir segurança e permissões adequadas para cada perfil; | 6 | 2 | E5 |
-| 11 | Dashboard - Operacional | MÉDIA | Como operador logístico, quero visualizar um dashboard com dados operacionais práticos como motoristas em rota, motoristas indesejados, para auxílio nas operações diárias; | 5 | 3 | E6 |
-| 12 | Dashboard - Gerencia | MÉDIA | Como gerente operacional, quero visualizar um dashboard com dados operacionais relevantes, além dos do operador logístico, quero ver a frequência de utilização e rentabilidade gerada por motoristas, agrupado por tipo de veículo, o ranking mensal dos agregados, mostrando frequência de utilização e rentabilidade gerada, para fácil visualização e análise do ranking mensal dos agregados para ter maior assertividade nas decisões das gratificações; | 7 | 3 | E6 |
-| 13 | Ranking Rentabilidade/Utilização | MÉDIA | Como gerente operacional, quero visualizar o ranking mensal dos agregados, mostrando frequência de utilização e rentabilidade gerada, podendo alternar a visão entre motorista/agregado, agrupado por tipo de veículo, para ter assertividade nas decisões das gratificação; | 7 | 3 | E3 |
-| 14 | Exportar Ranking  | BAIXA | Como gerente operacional, quero exportar o ranking mensal de rentabilidade/utilização e de avaliação, para que possa gerar relatórios internos e analisar o uso da frota; | 5 | 3 | E4 |
-
+| 5 | Registrar Manifesto na Rota | BAIXA | Como operador logístico, quero registrar o número do manifesto como item obrigatório no ato do encerramento do frete, para identificação da rota realizada, melhor auxiliando a análise do gerenteo peracional; | 3 | 3 | E1 |
+| 6 | Fila de espera ordenada | ALTA | Como operador logístico, quero que a lista de disponibilidade seja ordenada automaticamente em 4 blocos por status sequenciado por Disponível/Em Rota/Indisponível/Indesejado, onde cada bloco, os motoristas apareçam ordenados pelo manifesto mais antigo e que o status Indisponível seja revisado para uma atualização automática retornando ao status Disponível quando transcorridos 3 dias, para priorizar o contato com quem está esperando há mais tempo e dar maior rotatividade aos motoristas da fila; | 4 | 2 | E4(E1) |
+| 7 | Filtro por categoria de veículos | MÉDIA | Como operador logístico, quero filtrar a lista de motoristas pela categoria e subcategoria de veículos, combinado com o filtro de status já existente na tela, para escolher com agilidade qual motorista pode atender a uma rota específica; | 6 | 2 | E2 |
+| 8 | Importar Manifesto (.csv) | MÉDIA | Como gerente operacional, quero ter exclusividade para importar mensalmente os arquivos de .csv do ”Manifesto” (MDF-e) e de “Veículos”, através da aba “Dados” do sidebar, com dois campos independentes de arrastar/soltar, cada um exibindo a data da última inserção realizada, para evitar que o sistema fique desatualizado e permitir identificar rapidamente quando foi feita a última importação de cada arquivo; | 7 | 2 | E4 |
+| 9 | Acessar o Sistema por Tipo de Usuário | MÉDIA | Como usuário do sistema, quero acessar a plataforma com login autenticado via token JWT, com meu perfil (Operacional ou Gerência) embutido no token e com validade, para que minhas ações sejam autorizadas de acordo com as permissões do meu papel em cada requisição; | 6 | 2 | E5 |
+| 10 | Criação de sidebar | MÉDIA | Como usuário do sistema, quero navegar pela plataforma através de uma sidebar,  com abas de Dashboard/Motoristas/Dados/Usuários, sendo visível ao perfil Operacional somente a aba motoristas, para acessar rapidamente as áreas do sistema sem depender de menus adicionais ou restruturação do layout já existente; | 5 | 2 | E5 |
+| 11 | Gerenciar Usuários | MÉDIA | Como gerente operacional, quero gerenciar o cadastro de usuários do sistema – criar, editar e desativar registros com Nome/E-mail/Senha/Usuário, sendo o perfil GERÊNCIA (Gerente Operacional · Líder) e perfil OPERACIONAL (Operador Logístico · SAC), para garantir que cada pessoa tenha o nível de acesso adequado à sua função; | 6 | 2 | E5 |
+| 12 | Dashboard Motoristas em Rota/Indesejados | MÉDIA | Como gerente operacional, quero visualizar um dashboard com painéis de dados operacionais de "Motoristas Em Rota", mostrando a quantidade total e a lista com os nomes desses motoristas e "Motoristas Indesejados", mostrando a quantidade total, a lista com os nomes e, ao lado de cada nome, a quantidade de dias que aquele motorista está nesse status. E ainda com a opção de abrir um modal para poder atualizar seu status, para ter uma visão rápida da operação diária sem precisar abrir a lista completa de motoristas; | 6 | 3 | E6 |
+| 13 | Dashboard de Rentabilidade | MÉDIA | Como operador logístico, quero visualizar um dashboard com ranking de motoristas por Rentabilidade, com filtro por tipo de veículo e com pontuação geral e específica da rota Grande SP, para uma maior assertividade nas decisões das gratificações; | 7 | 3 | E3(E6) |
+| 14 | Dashboard de Frequência de Utilização | MÉDIA | Como operador logístico, quero visualizar um dashboard com ranking de motoristas por Frequência de utilização, com filtro por tipo de veículo e com pontuação geral e específica da rota Grande SP, para uma maior assertividade nas decisões das gratificações; | 7 | 3 | E3(E6) |
+| 15 | Exportação Ranking | MÉDIA | Como gerente operacional, quero exportar o ranking mensal de rentabilidade/utilização e de avaliação, para que possa gerar relatórios internos e analisar o uso da frota;; | 5 | 3 | E4 |
 
 <sub>**Legenda [ÉPICOS]:**<br>
 • **E1:** Disponibilidade Operacional<br>
 • **E2:** Cadastro e Getão de Agregados<br>
 • **E3:** Gamificação e Ranking<br>
 • **E4:** Importação e Consolidação de Dados<br>
-• **E5:** Controle de Acesso e Segurança
+• **E5:** Controle de Acesso e Segurança<br>
 • **E6:** Dashboard
-
 </sub>
 
 ---
@@ -144,8 +143,8 @@ Projeto idealizado pela FATEC · SJC em conjunto com seus alunos, tendo como par
 
 |      Sprint       |  Previsão  |    Status    |     Histórico     |
 | :---------------: | :--------: | :----------: | :---------------: |
-|        01         | 25/09/2026 |  Em Desenvolvimento  | - |
-|        02         | 23/10/2026 |  planejado  | - |
+|        01         | 25/09/2026 |  Concluído  | [Sprint Backlog - MVPI](MVP/sp1.md) |
+|        02         | 23/10/2026 |  Em Desenvolvimento  | - |
 |        03         | 20/11/2026 |  planejado  | - |
 | Feira de Soluções | 03/12/2026 |  planejado  | ---- |
 
