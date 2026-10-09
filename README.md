@@ -109,7 +109,7 @@ Projeto idealizado pela FATEC · SJC em conjunto com seus alunos, tendo como par
 ---
 
 ## 📋 Backlog do Produto <a id="backlog"></a>
-versão: v.7
+versão: v.7.
 
 | Rank | Título | Prioridade | User Stories | Estimativa | Sprint | Épico |
 |------|--------|-----------|--------------|-----------|--------|--------|
