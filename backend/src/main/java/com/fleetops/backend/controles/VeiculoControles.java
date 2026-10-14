@@ -1,6 +1,7 @@
 package com.fleetops.backend.controles;
 
-import com.fleetops.backend.entidades.TipoVeiculos;
+import com.fleetops.backend.entidades.SubtipoVeiculo;
+import com.fleetops.backend.entidades.TipoVeiculo;
 import com.fleetops.backend.entidades.Veiculo;
 import com.fleetops.backend.repositorios.VeiculoRepositorio;
 import java.util.List;
@@ -45,7 +46,17 @@ public class VeiculoControles {
     }
 
     @GetMapping("/tipo/{tipo}")
-    public List<Veiculo> listarPorTipo(@PathVariable TipoVeiculos tipo) {
+    public List<Veiculo> listarPorTipo(@PathVariable("tipo") TipoVeiculo tipo) {
         return repositorio.findByTipoVeiculo(tipo);
+    }
+
+    @GetMapping("/subtipo/{subtipo}")
+    public List<Veiculo> listarPorSubtipo(@PathVariable("subtipo") SubtipoVeiculo subtipo) {
+        return repositorio.findBySubtipoVeiculo(subtipo);
+    }
+
+    @GetMapping("/subtipos-por-tipo/{tipo}")
+    public List<SubtipoVeiculo> listarSubtiposPorTipo(@PathVariable("tipo") TipoVeiculo tipo) {
+        return SubtipoVeiculo.listarPorTipo(tipo);
     }
 }
