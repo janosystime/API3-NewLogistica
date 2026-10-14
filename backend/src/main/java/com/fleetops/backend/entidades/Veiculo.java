@@ -10,6 +10,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -43,15 +45,23 @@ public class Veiculo {
     private Integer anoFabricacao;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "tipo_veiculo", length = 30)
-    private TipoVeiculos tipoVeiculo;
+    @Column(name = "tipo_veiculo", length = 50)
+    private TipoVeiculo tipoVeiculo;
 
-    @Size(max = 50, message = "O subtipo do veículo deve ter no máximo 50 caracteres")
+    @Enumerated(EnumType.STRING)
     @Column(name = "subtipo_veiculo", length = 50)
-    private String subtipoVeiculo;
+    private SubtipoVeiculo subtipoVeiculo;
 
     @NotNull(message = "O agregado proprietário é obrigatório")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_id_agregado", nullable = false)
     private Agregado agregado;
+
+    @PrePersist
+    @PreUpdate
+    private void preencherTipoAutomatico() {
+        if (this.subtipoVeiculo != null && this.tipoVeiculo == null) {
+            this.tipoVeiculo = this.subtipoVeiculo.getTipo();
+        }
+    }
 }
